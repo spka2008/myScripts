@@ -1,20 +1,20 @@
 #!/bin/bash
-if [ -n "$1" ] 
-then
-    /opt/cprocsp/bin/amd64/csptest -keyset -enum -verifycontext -unique | iconv -f CP1251 -t UTF8| grep  'FLASH' | sed  's/.\+FLASH/FLASH/' > /tmp/delcont
-    for var in $(cat delcont)
-    do 
-        var1=$(/opt/cprocsp/bin/amd64/csptest -keyset -container $var -info | grep -a 'Valid' | sed 's/.\+- //; s/ [0-9][0-9]:.\+//')
-        dc=$(date -d $(echo $var1 | awk 'BEGIN{FS="."; OFS="-"} {print $3,$2,$1}') +%s) 
-        dn=$(date +%s)
-        if [ $dn -gt $dc ]
-        then
-            var=$1$(echo $var | sed 's!FLASH!! ; s!\\!/!g ; s!//!/!')
-            var=$(echo $var | awk 'BEGIN{FS="/"; OFS="/"} {$NF=""; print $0}')
-            rm -r $var
-            echo "$var истек $var1"
-        fi
-    done
-else echo "Адрес флешки?"
-fi
+fl="/run/media/serg/"$(ls /run/media/serg)
+hd="/var/opt/cprocsp/keys/serg"
+/opt/cprocsp/bin/amd64/csptest -keyset -enum -verifycontext -unique | iconv -f CP1251 -t UTF8 | awk -F '|' '{print $2}' > /tmp/delcont
+for var in $(cat /tmp/delcont)
+do 
+    valid_date=$(/opt/cprocsp/bin/amd64/csptest -keyset -container $var -info -unique  | grep -a 'Valid' | sed 's/.\+- //; s/ [0-9][0-9]:.\+//')
+    dc=$(date -d $(echo $valid_date | awk 'BEGIN{FS="."; OFS="-"} {print $3,$2,$1}') +%s) 
+    dn=$(date +%s)
+    if [ $dn -gt $dc ]
+    then
+        cont=$(echo $var| sed 's!\\!/!g ; s!//!/!')
+        cont=$(echo $cont | sed "s!HDIMAGE!${hd}!; s!FLASH!${fl}!")
+        cont=$(echo $cont | awk 'BEGIN{FS="/"; OFS="/"} {$NF=""; print $0}')
+        rm -r $cont
+        echo "$cont истекает $valid_date"
+    fi
+done
+
 rm /tmp/delcont
