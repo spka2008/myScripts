@@ -1,17 +1,17 @@
 #!/bin/bash
 path1=$(pwd)
-if [ -z $1 ]
+if [ -z "$1" ]
 then
     pathroot="./"
 else 
-    pathroot='$1'
+    pathroot=$1
 fi
-cd $pathroot
-path2=$(basename $(pwd))
+cd "$pathroot"
+path2=$(basename "$(pwd)")
 cd ..
-find $path2 -type d -exec mkdir compress{} \;
-find $path2 -type f -not -iname "*.pdf" -exec cp {} compress{} \;
-find $path2 -iname "*.pdf" > /tmp/compressPDF
+find "$path2" -type d -exec mkdir compress{} \;
+find "$path2" -type f -not -iname "*.pdf" -exec cp {} compress{} \;
+find "$path2" -iname "*.pdf" > /tmp/compressPDF
 IFS=$'\n'
 for var in $(cat /tmp/compressPDF)
     do
