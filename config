@@ -1,0 +1,60 @@
+# i3blocks configuration file
+#
+# The i3blocks man page describes the usage of the binary,
+# and its website describes the configuration:
+#
+#     https://vivien.github.io/i3blocks
+
+
+# Global properties
+separator=true
+separator_block_width=15
+#SCRIPT_DIR="~/.config/i3blocks/i3blocks-contrib"
+
+[documentation]
+full_text=Documentation
+website=https://vivien.github.io/i3blocks
+command=xdg-open "$website"
+color=#f12711
+
+[ip-adress]
+command=curl -s https://ipinfo.io | grep -E ip\" | awk -F'"' '{print $4}'
+interval=3600
+
+[pacman-updates]
+command=~/.config/i3blocks/i3blocks-contrib/arch-update/arch-update
+markup=pango
+interval= 3600
+QUIET=true
+WATCH=^linux.* ^pacman.*
+AUR_YAY=true
+LABEL= 
+
+[usb]
+command=~/.config/i3blocks/i3blocks-contrib/usb/usb
+markup=pango
+signal=1
+interval=10
+#IGNORE_LIST=[]
+IGNORE_LIST=["sda1", "sda2", "sda3", "sda4", "sda5", "sda6", "sda7", "sda8", "sda9", "sdb"]
+#INFO_TEXT_COLOR=white
+#MOUNTED_COLOR=green
+#PLUGGED_COLOR=gray
+#LOCKED_COLOR=gray
+UNLOCKED_NOT_MOUNTED_COLOR=yellow
+#PARTITIONLESS_COLOR=red
+#PARTITIONLESS_TEXT=no partitions
+#SEPARATOR=<span color='gray'> | </span>
+#LOCKED_INDICATOR= 
+#UNLOCKED_INDICATOR= 
+#READONLY_INDICATOR=ro
+#TRUNCATE_FS_LABELS=[not set by default, accepts +/- integers]
+
+[greetings]
+color=#f5af19
+command=echo "Hello, $USER!"
+interval=once
+
+[time]
+command=date '+%Y-%m-%d %H:%M:%S'
+interval=1

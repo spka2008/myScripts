@@ -144,7 +144,7 @@ if (update_count + aupdates_count) > 0:
         color_msg = args.updates_available_color
         matches = matching_updates(updates, args.watch)
         if matches:
-            info += ' [{0}]'.format(', '.join(matches))
+#            info += ' [{0}]'.format(', '.join(matches))
             short_info += '*'
     else:
         short_info = 'OK'
