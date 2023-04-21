@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 from subprocess import check_output
-def fsavail (s):
-    item = check_output(['lsblk', '-lnpo', 'FSAVAIL', s[0]], universal_newlines=True).split("\n")[0].strip()
+def attribute (s):
+    item = check_output(['lsblk', '-lnpo', 'FSAVAIL,LABEL', s[0]], universal_newlines=True).split("\n")[0].strip()
+    item = item.split(' ')[0]
     s.append(item)
     s[0]=s[0].replace('/dev/','')
     ss=s[2].split('/')
@@ -14,12 +15,12 @@ def getoutputs (s):
         col="gray"
     else:
         col="green"
-    return "<span color='{}'>[{}] </span><i>{}: </i>{}".format(col, s[0], s[2], s[3])
+    return "<span color='{}'><b>[{}]</b> </span><i>{}: </i>{}".format(col, s[0], s[2], s[3])
 lines = check_output(['lsblk', '-lpno', 'NAME,TYPE,MOUNTPOINT'], universal_newlines=True)
 lines = lines.split("\n")
 lines = filter(lambda s: (s.find('part')!=-1 and s.find('SWAP')==-1 and s.find('boot')==-1), lines)
 lines = list(map(lambda s: s.split(' '), lines))
-lines = list(map(fsavail ,lines))
+lines = list(map(attribute ,lines))
 outputs=list(map(getoutputs, lines))
 output='|'.join(outputs)
 #lines = list(map(lambda l: list(filter(lambda s: s != '',l)), lines))
