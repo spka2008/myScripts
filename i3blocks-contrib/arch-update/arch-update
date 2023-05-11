@@ -107,7 +107,10 @@ def get_aur_yaourt_updates():
     return aur_updates
 
 def get_aur_yay_updates():
-    output = check_output(['yay', '-Qua']).decode('utf-8')
+    try:
+        output = check_output(['yay', '-Qua'], shell=True,stderr=subprocess.STDOUT).decode('utf-8')
+    except subprocess.CalledProcessError as e:
+        raise 
     if not output:
         return []
 
