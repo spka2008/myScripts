@@ -3,6 +3,7 @@
 from subprocess import check_output
 def attribute (s):
     item = check_output(['lsblk', '-lnpo', 'FSAVAIL,LABEL', s[0]], universal_newlines=True).split("\n")[0].strip()
+    item = item.split()[0]
     s.append(item)
     s[0]=s[0].replace('/dev/','')
     ss=s[1].split('/')
