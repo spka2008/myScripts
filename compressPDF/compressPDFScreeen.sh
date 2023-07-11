@@ -17,7 +17,7 @@ for var in $(cat /tmp/compressPDF)
     do
         #var1=$(echo $var | sed 's/.pdf/1.pdf/'  )
         echo $var
-        gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile="compress$var" "$var" &
+        gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile="compress$var" "$var" &
         pid=$!
         spin='-\|/'
         i=0
